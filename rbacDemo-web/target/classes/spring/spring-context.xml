@@ -16,7 +16,7 @@
     
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" >
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/rbacDemo?rewriteBatchedStatements=true&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/rbacdemo?rewriteBatchedStatements=true&amp;useUnicode=true&amp;characterEncoding=utf8"/>
         <property name="user" value="root"/>
         <property name="password" value="zhouyuda123"/>
     </bean>
@@ -35,6 +35,7 @@
         <property name="basePackage" value="com.joe.rbacDemo.**.dao" />
     </bean>
     
+    <!-- aop配置 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
         <property name="dataSource" ref="dataSource"/>
     </bean>
