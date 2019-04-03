@@ -59,21 +59,43 @@
     </div>
     <script src="jquery/jquery-2.1.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="layer/layer.js"></script>
     <script>
     function dologin() {
         var loginacct = $("#loginacct").val();
         if(loginacct == ""){
-        	alert("账号不能为空");
+        	layer.msg("账号不能为空", {time:2000, icon:5, shift:1}, function(){
+        		
+        	});
         	return;
         }
         
         var userpswd = $("#userpswd").val();
         if(userpswd == ""){
-        	alert("密码不能为空");
+			layer.msg("密码不能为空", {time:2000, icon:5, shift:1}, function(){
+        		
+        	});
         	return;
         }
         
-        $("#loginForm").submit();
+        /* $("#loginForm").submit(); */
+        $.ajax({
+        	type : "POST",
+        	url : "doAJAXLogin",
+        	data : {
+        		"loginacct" : loginacct,
+        		"userpswd" : userpswd
+        	},
+        	success : function(result){
+        		if(result.success){
+        			window.location.href = "main";
+        		}else{
+        			layer.msg("密码错误", {time:2000, icon:5, shift:1}, function(){
+                		
+                	});	
+        		}
+        	}
+        });
     }
     </script>
   </body>
