@@ -8,6 +8,10 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     
+    <listener>
+    	<listener-class>com.joe.rbacDemo.web.ServerStartupListener</listener-class>
+    </listener>
+    
     <filter>
     	<filter-name>encoding</filter-name>
     	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

@@ -1,6 +1,7 @@
 package com.joe.rbacDemo.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,18 @@ public class UserServiceImpl implements UserService{
 	public User queryForLogin(User user) {
 		// TODO Auto-generated method stub
 		return userDao.queryForLogin(user);
+	}
+
+	@Override
+	public List<User> pageQueryData(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return userDao.pageQueryData(map);
+	}
+
+	@Override
+	public int pageQueryCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return userDao.pageQueryCount(map);
 	}
 	
 }
