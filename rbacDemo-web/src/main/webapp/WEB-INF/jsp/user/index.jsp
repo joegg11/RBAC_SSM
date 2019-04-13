@@ -1,5 +1,4 @@
 <%@page pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -156,42 +155,14 @@
                   <th width="100">操作</th>
                 </tr>
               </thead>
-              <tbody>
-              	<c:forEach items="${users}" var="user" varStatus="status">
-              		<tr>
-	                  <td>${status.count }</td>
-					  <td><input type="checkbox"></td>
-	                  <td>${user.loginacct }</td>
-	                  <td>${user.username }</td>
-	                  <td>${user.email }</td>
-	                  <td>
-					      <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-					      <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-						  <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-					  </td>
-	                </tr>	
-              	</c:forEach>
-                
-                
+              <tbody id="userData">
+              	
               </tbody>
 			  <tfoot>
 			     <tr >
 				     <td colspan="6" align="center">
 						<ul class="pagination">
-							<c:if test="${pageno > 1 }">
-								<li><a href="#" onclick="changePageno(${pageno-1})">上一页</a></li>
-							</c:if>
-							<c:forEach begin="1" end="${totalno}" varStatus="status">
-								<c:if test="${pageno == status.count }">
-									<li class="active"><a href="#">${status.count }</a></li>		
-								</c:if>
-								<c:if test="${pageno != status.count }">
-									<li><a href="#" onclick="changePageno(${status.count})">${status.count }</a></li>		
-								</c:if>
-							</c:forEach>
-							<c:if test="${pageno < totalno }">
-								<li><a href="#" onclick="changePageno(${pageno+1})">下一页</a></li>
-							</c:if>	
+						</ul>	
 					 </td>
 				 </tr>
 
@@ -207,6 +178,7 @@
     <script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
     <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 	<script src="${APP_PATH}/script/docs.min.js"></script>
+	<script src="${APP_PATH}/layer/layer.js"></script>
         <script type="text/javascript">
             $(function () {
 			    $(".list-group-item").click(function(){
@@ -219,6 +191,7 @@
 						}
 					}
 				});
+			    pageQuery(1);
             });
             $("tbody .btn-success").click(function(){
                 window.location.href = "assignRole.html";
@@ -227,9 +200,72 @@
                 window.location.href = "edit.html";
             });
             
-            function changePageno(pageno){
-            	window.location.href = "${APP_PATH}/user/index?pageno="+pageno;
+            //分页查询
+            function pageQuery(pageno){
+            	var loadingIndex = null;
+            	$.ajax({
+            		type : "POST",
+            		url : "${APP_PATH}/user/pageQuery",
+            		data : {
+            			"pageno" : pageno,
+            			"pagesize" : 5
+            		},
+            		beforeSend : function(){
+            			loadingIndex = layer.msg('处理中', {icon: 16});
+            		},
+            		success : function(result){
+            			layer.close(loadingIndex);
+            			if(result.success){
+    						
+            				//页面数据局部刷新
+            				var tableContent = "";
+            				var pageContent = "";
+            				
+            				var userPage = result.data;
+            				var users = userPage.datas;
+            				
+            				$.each(users, function(i, user){
+            					tableContent += '<tr>';
+	          	                tableContent += '  <td>'+(i+1)+'</td>';
+	          					tableContent += '  <td><input type="checkbox"></td>';
+	          	                tableContent += '  <td>'+user.loginacct+'</td>';
+	          	                tableContent += '  <td>'+user.username+'</td>';
+	          	                tableContent += '  <td>'+user.email+'</td>';
+	          	                tableContent += '  <td>';
+	          					tableContent += '      <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+	          					tableContent += '      <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+	          					tableContent += '	  <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+	          					tableContent += '  </td>';
+	          	                tableContent += '</tr>';
+            				});
+    
+            				if( pageno > 1 ){
+            					pageContent += '<li><a href="#" onclick="pageQuery('+(pageno-1)+')">上一页</a></li>';
+            				}
+            				
+            				for(var i=1; i<=userPage.totalno; i++){
+            					if( i==pageno ){
+            						pageContent += '<li class="active"><a href="#">'+i+'</a></li>';
+            					}else{
+            						pageContent += '<li><a href="#" onclick="pageQuery('+i+')">'+i+'</a></li>';
+            					}
+            				}
+            				
+            				if( pageno < userPage.totalno ){
+            					pageContent += '<li><a href="#" onclick="pageQuery('+(pageno+1)+')">下一页</a></li>';
+            				}
+            				
+            				$("#userData").html(tableContent);
+            				$(".pagination").html(pageContent);
+            			}else{
+            				layer.msg("用户信息分页查询失败", {time:2000, icon:5, shift:1}, function(){
+                        		
+                        	});	
+            			}
+            		}
+            	});
             }
+            
         </script>
   </body>
 </html>

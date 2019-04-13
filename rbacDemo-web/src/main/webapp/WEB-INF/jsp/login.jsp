@@ -8,9 +8,9 @@
     <meta name="description" content="">
     <meta name="keys" content="">
     <meta name="author" content="">
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/login.css">
+	<link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
+	<link rel="stylesheet" href="${APP_PATH}/css/login.css">
 	<style>
 
 	</style>
@@ -57,9 +57,9 @@
         <a class="btn btn-lg btn-success btn-block" onclick="dologin()" > 登录</a>
       </form>
     </div>
-    <script src="jquery/jquery-2.1.1.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="layer/layer.js"></script>
+    <script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
+    <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
+    <script src="${APP_PATH}/layer/layer.js"></script>
     <script>
     function dologin() {
         var loginacct = $("#loginacct").val();
