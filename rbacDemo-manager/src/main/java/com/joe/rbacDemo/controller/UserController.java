@@ -25,7 +25,7 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping("/pageQuery")
-	public Object pageQuery(Integer pageno, Integer pagesize){
+	public Object pageQuery(String queryText, Integer pageno, Integer pagesize){
 		AJAXResult result = new AJAXResult();
 		
 		try{
@@ -34,6 +34,7 @@ public class UserController {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("start", (pageno-1)*pagesize);
 			map.put("size", pagesize);
+			map.put("queryText", queryText);
 			
 			List<User> users = userService.pageQueryData(map);
 			
@@ -57,7 +58,9 @@ public class UserController {
 			
 			result.setData(userPage);
 			result.setSuccess(true);
+			
 		}catch(Exception e){
+			
 			e.printStackTrace();
 			result.setSuccess(false);
 		}
