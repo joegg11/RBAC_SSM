@@ -23,6 +23,27 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping("/insert")
+	public Object insert(User user){
+		AJAXResult result = new AJAXResult();
+		
+		try{
+			user.setUserpswd("123456");
+			userService.insertUser(user);
+			result.setSuccess(true);
+		}catch(Exception e){
+			e.printStackTrace();
+			result.setSuccess(false);
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("/add")
+	public String add(){
+		return "user/add";
+	}
+	
 	@ResponseBody
 	@RequestMapping("/pageQuery")
 	public Object pageQuery(String queryText, Integer pageno, Integer pagesize){
